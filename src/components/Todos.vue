@@ -1,0 +1,45 @@
+<template>
+    <div>
+        <h3>Todo Apps</h3>
+        <div class="todos">
+            <div v-for="todo in allTodos" :key="todo.id" class="todo">
+                {{ todo.title }}
+                <i @click="deleteTodo(todo.id)" class="fas fa-trash-alt" style="float:right"></i>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import { mapGetters, mapActions } from 'vuex';
+
+export default {
+    name: "Todos",
+    methods: {
+        ...mapActions(["fetchTodos", "deleteTodo"])
+    },
+    computed: mapGetters(['allTodos']),
+    created() {
+        this.fetchTodos();
+    },
+}
+</script>
+
+<style scoped>
+.todos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+}
+
+.todo {
+    border: 1px solid #ccc;
+    background: #fff;
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+@import url("https://use.fontawesome.com/releases/v5.12.1/css/all.css")
+</style>
