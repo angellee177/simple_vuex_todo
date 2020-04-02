@@ -1,8 +1,22 @@
 <template>
     <div>
         <h3>Todo Apps</h3>
+        <div class="legend">
+            <span>Double Click to mark as Complete</span>
+            <span>
+                <span class="incomplete-box"></span> = Incomplete
+            </span>
+            <span>
+                <span class="complete-box"></span> = Complete
+            </span>
+        </div>
         <div class="todos">
-            <div v-for="todo in allTodos" :key="todo.id" class="todo">
+            <div
+             @dblclick="onDblClick(todo)" 
+             v-for="todo in allTodos" 
+             :key="todo.id" 
+             class="todo"
+             v-bind:class="{'is-complete': todo.completed}">
                 {{ todo.title }}
                 <i @click="deleteTodo(todo.id)" class="fas fa-trash-alt" style="float:right"></i>
             </div>
@@ -16,7 +30,16 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
     name: "Todos",
     methods: {
-        ...mapActions(["fetchTodos", "deleteTodo"])
+        ...mapActions(["fetchTodos", "deleteTodo", "updateTodo"]),
+        onDblClick(todo) {
+            const updTodo = {
+                id: todo.id,
+                title: todo.title,
+                completed: !todo.completed
+            }
+
+            this.updateTodo(updTodo)
+        }
     },
     computed: mapGetters(['allTodos']),
     created() {
@@ -41,5 +64,36 @@ export default {
     position: relative;
     cursor: pointer;
 }
-@import url("https://use.fontawesome.com/releases/v5.12.1/css/all.css")
+
+.legend {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1rem;
+}
+
+.complete-box {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #41b883;
+}
+
+.incomplete-box {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #fff
+}
+
+.is-complete {
+    background:  #41b883;
+    color: #fff
+}
+
+@media (max-width: 500px) {
+    .todos {
+        grid-template-columns: 1fr
+    }
+}
+@import url("https://use.fontawesome.com/releases/v5.12.1/css/all.css");
 </style>
