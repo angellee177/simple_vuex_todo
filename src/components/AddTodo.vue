@@ -26,6 +26,11 @@ export default {
             e.preventDefault();
             this.addTodo(this.title);
         }
+    },
+    watch: {
+        title(newVal, oldVal) {
+            console.log(`old value ${oldVal}, new Value ${newVal}`)
+        }
     }
 }
 </script>
